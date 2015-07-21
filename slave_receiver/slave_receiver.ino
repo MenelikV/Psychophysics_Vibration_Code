@@ -56,23 +56,28 @@ void loop()
    Serial.println("So weit, so gut");
    for(i=0;i<50;i++){
    test += data[i];}
-  // Serial.print(test);
+  Serial.println(test);
    f_new_s = test.substring(1,indices[0]);
    f_new = f_new_s.toInt();
-  amp1_s = test.substring(indices[0]+1,indices[1]);
+   Serial.println(f_new);
+  amp1_s = test.substring(indices[1]+1,indices[2]);
   amp1 = amp1_s.toFloat();
-  amp2_s = test.substring(indices[1]+1, indices[2]);
+  amp2_s = test.substring(indices[2]+1, indices[3]);
   amp2 = amp2_s.toFloat();
-  duration_s = test.substring(indices[2]+1,indices[3]);
+  duration_s = test.substring(indices[3]+1,indices[4]);
   duration = duration_s.toInt();
-  pause_t_s = test.substring(indices[3]+1,indices[4]);
+  pause_t_s = test.substring(indices[4]+1,indices[5]);
   pause_t =  pause_t_s.toInt();
+  Serial.println(pause_t);
+  Serial.println(duration);
+  Serial.println(amp2);
+  Serial.println(amp1);
   Timer1.start();
   delayMicroseconds(duration);
   Timer1.stop();
   delayMicroseconds(pause_t);
-  f_new = atoi(data_string[1]);
-  amp2 = atof(data_string[3]);
+  f_new_s = test.substring(indices[0]+1,indices[1]);
+   f_new = f_new_s.toInt();
   Timer2.start();
   delayMicroseconds(duration);
   Timer2.stop();

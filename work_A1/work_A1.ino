@@ -56,7 +56,7 @@ void loop() {
 
   delay(100);
 
-  f_new = 25;
+  f_new = 300;
   amp1 = 0.8;
   pause_t = 3000000;
   duration1 = 1000000;
@@ -71,7 +71,7 @@ void loop() {
 
   delayMicroseconds(pause_t);
   
-  f_new = 40;
+  f_new = 250;
   amp2 = 0.4;
   Timer2.start();
   delayMicroseconds(duration2);
