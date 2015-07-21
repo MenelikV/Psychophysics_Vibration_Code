@@ -1,15 +1,3 @@
-// Wire Slave Receiver
-// by Nicholas Zambetti <http://www.zambetti.com>
-
-// Demonstrates use of the Wire library
-// Receives data as an I2C/TWI slave device
-// Refer to the "Wire Master Writer" example for use with this
-
-// Created 29 March 2006
-
-// This example code is in the public domain.
-
-
 #include <Wire.h>
 #include <DueTimer.h> // Arduino Due timer
 
@@ -21,14 +9,17 @@ int f2;  // frequency of the second stimulus
 double amp2;   // amplitude of the second stimulus
 int wave;   // waveform
 int x;
-double duration1, duration2; //duration of stimuli
 int pause_t = 0;
 
 int f_new;
 int num_samples = 100000;
 int i = 0;
 int j = 0;
-int data[18];
+int k = 0;
+int l = 0;
+char data_string[6][6];
+int data[50];
+int indices[6];
 
 bool received_data;
 
@@ -58,14 +49,17 @@ void loop()
 {
   delay(100);
     if(received_data){
-  f_new = f1;
+      
+  f_new = atoi(data_string[0]);
+  amp1 = atof(data_string[2]);
   Timer1.start();
-  delayMicroseconds(duration1);
+  delayMicroseconds(atoi(data_string[4]));
   Timer1.stop();
-  delayMicroseconds(pause_t);
-  f_new = f2;
+  delayMicroseconds(atoi(data_string[5]));
+  f_new = atoi(data_string[1]);
+  amp2 = atof(data_string[3]);
   Timer2.start();
-  delayMicroseconds(duration2);
+  delayMicroseconds(atoi(data_string[4]));
   Timer2.stop();
   received_data =  false;}
 }
@@ -74,11 +68,18 @@ void loop()
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany)
 {
-  char x = Wire.read();    // receive byte as an integer
+  int x = Wire.read();    // receive byte as an integer
   Serial.println(x);         // print the integer
-  data[j] =  x;
+  data[j] = x;
   j++;
-  if(j > 2 & data[j-2] == data[j-1] && data[j-1] == data[j]){
+  if(j > 2 && data[j] == 110 & data[j-1] == 92){
+    indices[k] = j;
+    k++;
+    if(k>0){
+    for(l = indices[k-1]; l = indices[k]; l++){
+      data_string[k][l] = data[l];}
+  }}
+    if(j > 2 && data[j] == 116 & data[j-1] == 92 ){
   received_data = true;
   Serial.println("Valid Test");
   j = 0;}

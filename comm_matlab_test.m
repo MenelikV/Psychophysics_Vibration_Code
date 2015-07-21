@@ -7,6 +7,7 @@ clc;                    % clear the command line
 fclose('all');          % close all open files
 delete(instrfindall);   % Reset Com Port
 %delete(timerfindall);  % Delete Timers
+digits(6)               % Calculus with 6 digits
 
 %% Connection with the arduino
 
@@ -49,7 +50,7 @@ else
 end
 end
 
-fwrite(s,length(exp_mod));
+
 for i=1:length(exp_mod)    
     fwrite(s,exp_mod(i));
     if(fread(s,1) == 115)
@@ -58,6 +59,7 @@ for i=1:length(exp_mod)
         warning('the sending of data may not be as sucessfull as axpected by Mister FRIEDL')
     end
 end
+fwrite(s,unicode2native('\t'));
   
 
 %% Wait for the stimuli
