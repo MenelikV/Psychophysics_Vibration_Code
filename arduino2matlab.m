@@ -1,9 +1,11 @@
 %Function to process the incoming raw data from the arduino
 function [time, button_pressed] = arduino2matlab(feedback,timeout)
+    if(isempty(feedback))
+        error('empty feedback after the timeout');
+    end
+    if(length(feedback) < timeout/2 - 1)
     
-    if(length(feedback) < timeout/2)
-    
-    warning('the reception of the incoming data may not be successful');
+    warning('the reception of the incoming data may not be successful'); %#ok<WNTAG>
     end
 
     possible_indices = {find(feedback == 'r');find(feedback == 'b')};
@@ -13,12 +15,9 @@ function [time, button_pressed] = arduino2matlab(feedback,timeout)
     if(isempty(possible_indices))
      error('Pressed button not dectected');
     end
-    indice = find(~cellfun(@isempty,possible_indices)); %Indice of the non empty cell
-    if(length(indice) > 1)
-        [~,real_indice] = max(length(possible_indices));
-        indice = real_indice;
-    end
-
+    
+    [~,indice] = max(cellfun(@length,possible_indices)); %Indice of the non empty cell
+    
     switch indice
         case 1
             button_pressed = 'red';
