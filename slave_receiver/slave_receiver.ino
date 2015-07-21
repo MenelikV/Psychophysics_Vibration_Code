@@ -56,27 +56,27 @@ void loop()
    Serial.println("So weit, so gut");
    for(i=0;i<50;i++){
    test += data[i];}
-  Serial.println(test);
-   f_new_s = test.substring(1,indices[0]);
+  //Serial.println(test);
+   f_new_s = test.substring(2,indices[0]+1);
    f_new = f_new_s.toInt();
-   Serial.println(f_new);
-  amp1_s = test.substring(indices[1]+1,indices[2]);
+   //Serial.println(f_new_s);
+  amp1_s = test.substring(indices[1]+3,indices[2]+1);
   amp1 = amp1_s.toFloat();
-  amp2_s = test.substring(indices[2]+1, indices[3]);
+  amp2_s = test.substring(indices[2]+3, indices[3]+1);
   amp2 = amp2_s.toFloat();
-  duration_s = test.substring(indices[3]+1,indices[4]);
+  duration_s = test.substring(indices[3]+3,indices[4]+1);
   duration = duration_s.toInt();
-  pause_t_s = test.substring(indices[4]+1,indices[5]);
+  pause_t_s = test.substring(indices[4]+3,indices[5]+1);
   pause_t =  pause_t_s.toInt();
-  Serial.println(pause_t);
-  Serial.println(duration);
+  /*Serial.println(amp1);
   Serial.println(amp2);
-  Serial.println(amp1);
+  Serial.println(duration);
+  Serial.println(pause_t);*/
   Timer1.start();
   delayMicroseconds(duration);
   Timer1.stop();
   delayMicroseconds(pause_t);
-  f_new_s = test.substring(indices[0]+1,indices[1]);
+  f_new_s = test.substring(indices[0]+3,indices[1]+1);
    f_new = f_new_s.toInt();
   Timer2.start();
   delayMicroseconds(duration);
