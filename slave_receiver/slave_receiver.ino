@@ -51,6 +51,7 @@ void loop()
     if(received_data){
       
   f_new = atoi(data_string[0]);
+  Serial.println(f_new);
   amp1 = atof(data_string[2]);
   Timer1.start();
   delayMicroseconds(atoi(data_string[4]));
@@ -74,6 +75,7 @@ void receiveEvent(int howMany)
   j++;
   if(j > 2 && data[j] == 110 & data[j-1] == 92){
     indices[k] = j;
+    Serial.println(j);
     k++;
     if(k>0){
     for(l = indices[k-1]; l = indices[k]; l++){

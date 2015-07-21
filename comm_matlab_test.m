@@ -77,12 +77,12 @@ readasync(s);
 feedback = [];  %Raw data incoming from arduino
 timeout = 10^2; %Timeout for the reading 
 
-while(timeout && length(feedback) < 22)
+while(j < timeout && length(feedback) < timeout/2)
     feedback = [feedback,native2unicode(fread(s,1))];
-    timeout = timeout - 1;
+    j = j + 1;
 end
 
-[time, button_pressed] = arduino2matlab(feedback);
+[time, button_pressed] = arduino2matlab(feedback, timeout);
 
 % display the result
 sprintf('time elapsed in ms : %d \n',time)

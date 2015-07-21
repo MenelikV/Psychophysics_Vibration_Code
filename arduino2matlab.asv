@@ -7,7 +7,7 @@ function [time, button_pressed] = arduino2matlab(feedback,timeout)
     end
 
     possible_indices = {find(feedback == 'r');find(feedback == 'b')};
-   
+    disp(possible_indices)
     % Check if a letter has been detected 
     
     if(isempty(possible_indices))
@@ -15,9 +15,7 @@ function [time, button_pressed] = arduino2matlab(feedback,timeout)
     end
     indice = find(~cellfun(@isempty,possible_indices)); %Indice of the non empty cell
     if(length(indice) > 1)
-        [~,real_indice] = max(length(possible_indices));
-        indice = real_indice;
-    end
+        [~,real_indice] = max(length(possible_indi
 
     switch indice
         case 1
