@@ -9,7 +9,6 @@ int f2;  // frequency of the second stimulus
 double amp2;   // amplitude of the second stimulus
 int wave;   // waveform
 int x;
-int pause_t = 0;
 
 int f_new;
 int num_samples = 100000;
@@ -17,11 +16,15 @@ int i = 0;
 int j = 0;
 int k = 0;
 int l = 0;
+int duration, pause_t;
 char data_string[6][6];
-int data[50];
+char data[50];
 int indices[6];
+String test;
+String f_new_s, amp1_s, amp2_s, duration_s, pause_t_s;
 
-bool received_data;
+
+bool received_data = false;
 
 
 // table of data send by Matlab through the first arduino
@@ -43,47 +46,56 @@ void setup()
   Wire.begin(1);                // join i2c bus with address #4
   Wire.onReceive(receiveEvent); // register event
   Serial.begin(57600);           // start serial for output
+
 }
 
 void loop()
 {
   delay(100);
     if(received_data){
-      
-  f_new = atoi(data_string[0]);
-  Serial.println(f_new);
-  amp1 = atof(data_string[2]);
+   Serial.println("So weit, so gut");
+   for(i=0;i<50;i++){
+   test += data[i];}
+  // Serial.print(test);
+   f_new_s = test.substring(1,indices[0]);
+   f_new = f_new_s.toInt();
+  amp1_s = test.substring(indices[0]+1,indices[1]);
+  amp1 = amp1_s.toFloat();
+  amp2_s = test.substring(indices[1]+1, indices[2]);
+  amp2 = amp2_s.toFloat();
+  duration_s = test.substring(indices[2]+1,indices[3]);
+  duration = duration_s.toInt();
+  pause_t_s = test.substring(indices[3]+1,indices[4]);
+  pause_t =  pause_t_s.toInt();
   Timer1.start();
-  delayMicroseconds(atoi(data_string[4]));
+  delayMicroseconds(duration);
   Timer1.stop();
-  delayMicroseconds(atoi(data_string[5]));
+  delayMicroseconds(pause_t);
   f_new = atoi(data_string[1]);
   amp2 = atof(data_string[3]);
   Timer2.start();
-  delayMicroseconds(atoi(data_string[4]));
+  delayMicroseconds(duration);
   Timer2.stop();
-  received_data =  false;}
+  received_data =  false;
+  j = 0;
+}
 }
 
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany)
 {
-  int x = Wire.read();    // receive byte as an integer
-  Serial.println(x);         // print the integer
-  data[j] = x;
   j++;
-  if(j > 2 && data[j] == 110 & data[j-1] == 92){
-    indices[k] = j;
-    Serial.println(j);
+  data[j] = Wire.read();    // receive byte as a char
+ 
+  if(data[j] == 'n'){
+    indices[k] = j-2;
     k++;
-    if(k>0){
-    for(l = indices[k-1]; l = indices[k]; l++){
-      data_string[k][l] = data[l];}
+    if(k == 6){
+    received_data = true;
   }}
-    if(j > 2 && data[j] == 116 & data[j-1] == 92 ){
-  received_data = true;
-  Serial.println("Valid Test");
-  j = 0;}
+  
+
 
 }
+
