@@ -8,6 +8,12 @@ fclose('all');          % close all open files
 delete(instrfindall);   % Reset Com Port
 %delete(timerfindall);  % Delete Timers
 digits(6)               % Calculus with 6 digits
+if(exist('s','var'))
+    if(isa(s,'serial')) % Suppress the serial variable if it exists
+        delete(s);
+        clear all; %#ok<CLSCR>
+    end
+end
 
 %% Connection with the arduino
 
@@ -22,8 +28,8 @@ pause(3);
 
 %% Experimental paramters
 
-f1 = 50;
-f2 = 200;
+f1 = 20;
+f2 = 15;
 
 % Amplitude should be below 1, no check in scripts though
 a1 = 0.5;
@@ -50,7 +56,7 @@ else
 end
 end
 
-
+fwrite(s,unicode2native('\n'));
 for i=1:length(exp_mod)    
     fwrite(s,exp_mod(i));
     if(fread(s,1) == 115)
