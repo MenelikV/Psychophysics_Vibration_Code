@@ -20,7 +20,7 @@ end
 % Info = instrhwinfo('serial');
 % ports = Info.AvailableSerialPorts;
 % port = ports(end);
-port = 'COM5';
+port =  'COM5';
 
 s=serial(port,'BaudRate',57600); 
 
@@ -29,7 +29,7 @@ pause(3);
 
 %% Experimental paramters
 
-f1 = 40;
+f1 = 20;
 f2 = 15;
 
 % Amplitude should be below 1, no check in scripts though
@@ -45,30 +45,12 @@ exp = [f1, f2, a1, a2, duration, pause_t];
 %% Send the parameters to the arduino
 disp('Sending data to the arduino A0')
 
-
-exp_mod = [];
-for i = 1:length(exp)
-if(exp(i) < 2^16)
-    temp = num2str(exp(i));
-    exp_mod = [exp_mod temp unicode2native('\n')]; %#ok<AGROW>
-        
+fwrite(s,exp,'uint16');
+if(fread(s,1) == 115)
+    disp('Sending Sucessfull')
 else
-    error('Number too high')
+    warning('Some data may not have been sent properly'); %#ok<WNTAG>
 end
-end
-
-fwrite(s,unicode2native('\n'));
-for i=1:length(exp_mod)    
-    fwrite(s,exp_mod(i));
-    if(fread(s,1) == 115)
-        disp('Sending sucessfull')
-    else
-        warning('the sending of data may not be as sucessfull as axpected by Mister FRIEDL') %#ok<WNTAG>
-    end
-end
-fwrite(s,unicode2native('\t'));
-  
-
 %% Wait for the stimuli
 
 total_duration = (2*duration + pause_t)/1000; %total duration in s
