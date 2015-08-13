@@ -17,13 +17,14 @@ function [time, button_pressed] = arduino2matlab(feedback,timeout)
     end
     
     [~,indice] = max(cellfun(@length,possible_indices)); %Indice of the non empty cell
+    button_pressed = indice;
     
     switch indice
         case 1
-            button_pressed = 'red';
+
             letter =  'r';
         case 2
-            button_pressed = 'black';
+
             letter = 'b';
         otherwise
             error('Pressed button not recognized')
