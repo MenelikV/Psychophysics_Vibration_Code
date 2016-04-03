@@ -17,10 +17,10 @@ end
 
 %% Connection with the arduino
 
-% Info = instrhwinfo('serial');
-% ports = Info.AvailableSerialPorts;
-% port = ports(end);
-port = 'COM5';
+Info = instrhwinfo('serial');
+ports = Info.AvailableSerialPorts;
+port = ports(end);
+%port = 'COM5';
 
 s=serial(port,'BaudRate',57600); 
 
@@ -29,15 +29,15 @@ pause(3);
 
 %% Experimental paramters
 
-f1 = 40;
-f2 = 15;
+f1 = 440;
+f2 = 100;
 
 % Amplitude should be below 1, no check in scripts though
-a1 = 0.5;
-a2 = 0.6;
+a1 = 0.7;
+a2 = 0.4;
 
 % Duration given in ms
-duration = 1000; 
+duration = 10000; 
 pause_t = 1000;
 
 exp = [f1, f2, a1, a2, duration, pause_t];

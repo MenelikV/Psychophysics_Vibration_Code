@@ -17,10 +17,10 @@ end
 
 %% Connection with the arduino
 
-% Info = instrhwinfo('serial');
-% ports = Info.AvailableSerialPorts;
-% port = ports(end);
-port =  'COM5';
+Info = instrhwinfo('serial');
+ports = Info.AvailableSerialPorts;
+port = ports(end);
+%port =  'COM5';
 
 s=serial(port,'BaudRate',57600); 
 
